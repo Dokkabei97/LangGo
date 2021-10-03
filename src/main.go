@@ -17,8 +17,10 @@ func main() {
 	db.AutoMigrate(&domain.Skill{})
 
 	db.Create(&domain.User{Username: "test", Skill: nil})
+
 	db.Create(&domain.Skill{Lang: "Java", Tier: 1, UserID: 1})
 	db.Create(&domain.Skill{Lang: "Go", Tier: 2, UserID: 1})
 	db.Create(&domain.Skill{Lang: "Python", Tier: 2, UserID: 1})
 	db.Create(&domain.Skill{Lang: "JavaScript", Tier: 2, UserID: 1})
+
 }
