@@ -71,5 +71,6 @@ pnpm-debug.log*
 /build
 
 /config
+database.go
 
 
