@@ -5,6 +5,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var skill Skill
+
 type Skill struct {
 	gorm.Model        // 기본적으로 id, create_at, updated_at, deleted_at 제공
 	Lang       string // 보유 스킬
@@ -12,12 +14,12 @@ type Skill struct {
 	UserID     uint   // 유저 fk
 }
 
-func findByLang(lang string) {
-	// todo 스킬 언어별 검색
+func findByLang(lang string) *gorm.DB {
+	return config.DB.Where("lang = ?", lang).Find(&skill)
 }
 
-func findByTier(tier uint) {
-	// todo 스킬 티어별 검색
+func findByTier(tier uint) *gorm.DB {
+	return config.DB.Where("tier = ?", tier).Find(&skill)
 }
 
 func CreateSkill(skill *Skill) (err error) {
@@ -27,12 +29,20 @@ func CreateSkill(skill *Skill) (err error) {
 	return nil
 }
 
-func UpdateSkill(skill *Skill) (err error) {
-	// todo 스킬 업데이트
+func UpdateSkill(tier uint) (err error) {
+	if err = config.DB.Model(&skill).Update("tier", tier).Error; err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func DeleteSkill(skill *Skill) (err error) {
-	// todo 스킬 삭제
+func DeleteSkillByTier(tier uint) (err error) {
+	config.DB.Where("tier = ?", tier).Delete(&skill)
+	return nil
+}
+
+func DeleteSkillByLang(lang string) (err error) {
+	config.DB.Where("lang = ?", lang).Delete(&skill)
 	return nil
 }
