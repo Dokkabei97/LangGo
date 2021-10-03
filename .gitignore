@@ -70,5 +70,6 @@ pnpm-debug.log*
 # production
 /build
 
+/config
 
 
