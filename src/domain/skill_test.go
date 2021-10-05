@@ -27,3 +27,20 @@ func TestCreateSkill(t *testing.T) {
 	assert.Equal("GO", skillEx.Lang)
 	config.DB.Migrator().DropTable("skills")
 }
+
+func TestDeleteSkillByTier(t *testing.T) {
+	dbConnection()
+	assert := assert.New(t)
+
+	skillEx := Skill{Lang: "GO", Tier: 1}
+	if err := CreateSkill(&skillEx); err != nil {
+		t.Error("not created")
+	}
+
+	DeleteSkillByTier(1)
+
+	var skill Skill
+	config.DB.First(&skill, 1)
+	assert.Nil(skill)
+	config.DB.Migrator().DropTable("skills")
+}

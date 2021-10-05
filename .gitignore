@@ -38,7 +38,6 @@ out/
 
 
 ### FrontEND ###
-
 .DS_Store
 node_modules
 /dist
@@ -70,7 +69,5 @@ pnpm-debug.log*
 # production
 /build
 
-/config
-database.go
-
-
+# docker
+/mysql/
