@@ -1,19 +1,24 @@
 package route
 
-import "github.com/gin-gonic/gin"
+import (
+	"controller"
+	"github.com/gin-gonic/gin"
+)
 
-func UserRoute() {
+func UserRoute() *gin.Engine {
 	router := gin.Default()
 
 	user := router.Group("/api/v1/users")
 	{
-		user.POST("/create")
-		user.PATCH("/update")
-		user.DELETE("/delete")
+		user.POST("/create", controller.CreateUser)
+		user.PATCH("/update/:userToken")
+		user.DELETE("/delete/:userToken")
 	}
+
+	return router
 }
 
-func SkillRoute() {
+func SkillRoute() *gin.Engine {
 	router := gin.Default()
 
 	skill := router.Group("/api/v1/skills")
@@ -22,4 +27,6 @@ func SkillRoute() {
 		skill.PATCH("/update")
 		skill.DELETE("/delete")
 	}
+
+	return router
 }

@@ -1,50 +1,28 @@
 package main
 
 import (
-	"common"
 	"config"
 	"domain/skill"
 	"domain/user"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"route"
 )
 
+var err error
+
 func main() {
-	db, err := gorm.Open(mysql.Open(config.DBUrl(config.BuildDBConfig())), &gorm.Config{})
+	config.DB, err = gorm.Open(mysql.Open(config.DBUrl(config.BuildDBConfig())), &gorm.Config{})
+
 	if err != nil {
 		panic("DB 연결에 실패했습니다!")
 	}
 
-	db.AutoMigrate(&user.User{})
-	db.AutoMigrate(&skill.Skill{})
+	err = config.DB.AutoMigrate(&user.User{}, &skill.Skill{})
 
-	pwd := "test123!"
-	pwdCry, _ := bcrypt.GenerateFromPassword([]byte(pwd), bcrypt.DefaultCost)
+	r := route.UserRoute()
+	r.Use(gin.Logger())
 
-	db.Create(&user.User{
-		UserToken: common.RandomCharacterWithPrefix(user.USER_PREFIX),
-		Email:     "test@test.com",
-		Password:  string(pwdCry),
-		Username:  "test",
-		Skill:     nil,
-	})
-
-	db.Create(&skill.Skill{
-		SkillToken: common.RandomCharacterWithPrefix(skill.Skill_PREFIX),
-		Lang:       "Java", Tier: 1, UserID: 1,
-	})
-	db.Create(&skill.Skill{
-		SkillToken: common.RandomCharacterWithPrefix(skill.Skill_PREFIX),
-		Lang:       "Go", Tier: 2, UserID: 1,
-	})
-	db.Create(&skill.Skill{
-		SkillToken: common.RandomCharacterWithPrefix(skill.Skill_PREFIX),
-		Lang:       "Python", Tier: 2, UserID: 1,
-	})
-	db.Create(&skill.Skill{
-		SkillToken: common.RandomCharacterWithPrefix(skill.Skill_PREFIX),
-		Lang:       "JavaScript", Tier: 2, UserID: 1,
-	})
-
+	err = r.Run()
 }
