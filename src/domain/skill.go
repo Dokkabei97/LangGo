@@ -9,8 +9,9 @@ var skill Skill
 
 type Skill struct {
 	gorm.Model        // 기본적으로 id, create_at, updated_at, deleted_at 제공
-	Lang       string // 보유 스킬
-	Tier       uint   // 스킬 숙련도
+	SkillToken string `gorm:"not null"` // 스킬 토큰
+	Lang       string `gorm:"not null"` // 보유 스킬
+	Tier       uint   `gorm:"not null"` // 스킬 숙련도
 	UserID     uint   // 유저 fk
 }
 

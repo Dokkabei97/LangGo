@@ -70,4 +70,4 @@ pnpm-debug.log*
 /build
 
 # docker
-/mysql/
+docker-compose/mysql
