@@ -1,11 +1,14 @@
 package domain
 
 import (
+	"common"
 	"config"
 	"gorm.io/gorm"
 )
 
 var user User
+
+const USER_PREFIX string = "usr_"
 
 type User struct {
 	gorm.Model
@@ -35,6 +38,7 @@ func findByUsername(username string) *gorm.DB {
 }
 
 func CreateUser(user *User) (err error) {
+	user.UserToken = common.RandomCharacterWithPrefix(USER_PREFIX)
 	if err = config.DB.Create(user).Error; err != nil {
 		return err
 	}

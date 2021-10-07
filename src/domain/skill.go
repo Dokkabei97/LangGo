@@ -7,6 +7,8 @@ import (
 
 var skill Skill
 
+const Skill_PREFIX = "ski_"
+
 type Skill struct {
 	gorm.Model        // 기본적으로 id, create_at, updated_at, deleted_at 제공
 	SkillToken string `gorm:"not null"` // 스킬 토큰
