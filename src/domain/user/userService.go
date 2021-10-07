@@ -1,4 +1,4 @@
-package domain
+package user
 
 import (
 	"common"
@@ -6,32 +6,28 @@ import (
 	"gorm.io/gorm"
 )
 
-var user User
-
-const USER_PREFIX string = "usr_"
-
-type User struct {
-	gorm.Model
-	UserToken string  `gorm:"not null"` // 유저 토큰
-	Email     string  `gorm:"not null"` // 이메일
-	Username  string  `gorm:"not null"` // 유저 이름
-	Password  string  `gorm:"not null"` // 유저 패스워드
-	Skill     []Skill // 보유 스킬들
+type UserService interface {
+	FindByUserToken(userToken string)
+	FindByUserEmail(email string)
+	FindByUsername(username string)
+	CreateUser(user *User)
+	UpdateUser(user *User)
+	DeleteUser(userToken string)
 }
 
-func findByUserToken(userToken string) *gorm.DB {
+func FindByUserToken(userToken string) *gorm.DB {
 	return config.DB.
 		Where("user_token = ?", userToken).
 		Find(&user)
 }
 
-func findByUserEmail(email string) *gorm.DB {
+func FindByUserEmail(email string) *gorm.DB {
 	return config.DB.
 		Where("email = ?", email).
 		Find(&user)
 }
 
-func findByUsername(username string) *gorm.DB {
+func FindByUsername(username string) *gorm.DB {
 	return config.DB.
 		Where("username = ?", username).
 		Find(&user)
