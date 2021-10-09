@@ -21,7 +21,7 @@ func main() {
 
 	err = config.DB.AutoMigrate(&user.User{}, &skill.Skill{})
 
-	r := route.UserRoute()
+	r := route.SetRoute()
 	r.Use(gin.Logger())
 
 	err = r.Run()

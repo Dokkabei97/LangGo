@@ -1,4 +1,4 @@
-package controller
+package user
 
 import (
 	userService "domain/user"

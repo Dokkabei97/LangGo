@@ -1,6 +1,7 @@
 package skill
 
 import (
+	"common"
 	"config"
 	"gorm.io/gorm"
 )
@@ -17,15 +18,20 @@ type Skill struct {
 	UserID     uint   // 유저 fk
 }
 
-func findByLang(lang string) *gorm.DB {
-	return config.DB.Where("lang = ?", lang).Find(&skill)
+func FindByLang(lang string) *gorm.DB {
+	return config.DB.
+		Where("lang = ?", lang).
+		Find(&skill)
 }
 
-func findByTier(tier uint) *gorm.DB {
-	return config.DB.Where("tier = ?", tier).Find(&skill)
+func FindByTier(tier uint) *gorm.DB {
+	return config.DB.
+		Where("tier = ?", tier).
+		Find(&skill)
 }
 
 func CreateSkill(skill *Skill) (err error) {
+	skill.SkillToken = common.RandomCharacterWithPrefix(Skill_PREFIX)
 	if err = config.DB.Create(skill).Error; err != nil {
 		return err
 	}
@@ -40,12 +46,7 @@ func UpdateSkill(tier uint) (err error) {
 	return nil
 }
 
-func DeleteSkillByTier(tier uint) (err error) {
-	config.DB.Where("tier = ?", tier).Delete(&skill)
-	return nil
-}
-
-func DeleteSkillByLang(lang string) (err error) {
-	config.DB.Where("lang = ?", lang).Delete(&skill)
+func DeleteSkill(skillToken string) (err error) {
+	config.DB.Where("skill_token = ?", skillToken).Delete(&skill)
 	return nil
 }
