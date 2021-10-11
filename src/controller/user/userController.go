@@ -7,8 +7,9 @@ import (
 	"net/http"
 )
 
+var user userService.User
+
 func CreateUser(c *gin.Context) {
-	var user userService.User
 
 	if err := c.BindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -20,4 +21,14 @@ func CreateUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
+
+func DeleteUser(c *gin.Context) {
+	userToken := c.Params.ByName("userToken")
+
+	if err := userService.DeleteUser(userToken); err != nil {
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+
+	c.JSON(http.StatusOK, gin.H{"userToken" + userToken: "is deleted"})
 }

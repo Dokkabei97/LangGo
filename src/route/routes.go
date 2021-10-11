@@ -11,9 +11,9 @@ func SetRoute() *gin.Engine {
 
 	user := router.Group("/api/v1/users")
 	{
-		user.POST("/create", userController.CreateUser)
+		user.POST("/", userController.CreateUser)
 		//user.PATCH("/update/:userToken")
-		//user.DELETE("/delete/:userToken")
+		user.DELETE("/:userToken", userController.DeleteUser)
 	}
 
 	skill := router.Group("/api/v1/skills")
